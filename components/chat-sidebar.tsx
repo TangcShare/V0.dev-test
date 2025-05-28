@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Search } from "lucide-react"
+import { Search, User } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import type { Contact } from "@/types/chat"
 
@@ -9,6 +9,26 @@ interface ChatSidebarProps {
   contacts: Contact[]
   activeContactId: string
   onSelectContact: (contact: Contact) => void
+}
+
+// 头像组件，带有错误处理
+const Avatar = ({ src, alt, className }: { src: string; alt: string; className: string }) => {
+  const [imageError, setImageError] = useState(false)
+
+  return (
+    <div className={`${className} bg-gray-200 flex items-center justify-center overflow-hidden`}>
+      {!imageError ? (
+        <img
+          src={src || "/placeholder.svg"}
+          alt={alt}
+          className="w-full h-full object-cover"
+          onError={() => setImageError(true)}
+        />
+      ) : (
+        <User className="w-1/2 h-1/2 text-gray-400" />
+      )}
+    </div>
+  )
 }
 
 export default function ChatSidebar({ contacts, activeContactId, onSelectContact }: ChatSidebarProps) {
@@ -37,7 +57,7 @@ export default function ChatSidebar({ contacts, activeContactId, onSelectContact
             onClick={() => onSelectContact(contact)}
           >
             <div className="relative">
-              <img src={contact.avatar || "/placeholder.svg"} alt={contact.name} className="w-10 h-10 rounded-full" />
+              <Avatar src={contact.avatar} alt={contact.name} className="w-10 h-10 rounded-full" />
               <span
                 className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white ${contact.status === "online" ? "bg-green-500" : "bg-gray-400"}`}
               />

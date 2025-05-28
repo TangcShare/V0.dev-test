@@ -6,12 +6,12 @@ import ChatWindow from "@/components/chat-window"
 import type { Contact, Message } from "@/types/chat"
 
 export default function ChatApp() {
-  // 初始联系人数据
+  // 初始联系人数据 - 使用可靠的头像
   const initialContacts: Contact[] = [
     {
       id: "1",
       name: "张三",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
       status: "online",
       lastMessage: "你好，最近怎么样？",
       time: "09:30",
@@ -19,7 +19,7 @@ export default function ChatApp() {
     {
       id: "2",
       name: "李四",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
       status: "offline",
       lastMessage: "明天会议几点开始？",
       time: "昨天",
@@ -27,7 +27,7 @@ export default function ChatApp() {
     {
       id: "3",
       name: "王五",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
       status: "online",
       lastMessage: "项目进展如何？",
       time: "周一",
@@ -35,7 +35,7 @@ export default function ChatApp() {
     {
       id: "4",
       name: "工作群",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=150&h=150&fit=crop&crop=face",
       status: "online",
       lastMessage: "[张三]: 文档已更新",
       time: "08:45",
@@ -177,8 +177,11 @@ export default function ChatApp() {
   const [contacts, setContacts] = useState<Contact[]>(initialContacts)
   const [messages, setMessages] = useState<Record<string, Message[]>>(initialMessages)
   const [activeContact, setActiveContact] = useState<Contact>(contacts[0])
-  // 在状态部分添加一个新的状态
   const [isTyping, setIsTyping] = useState(false)
+  // 添加当前用户头像
+  const [userAvatar, setUserAvatar] = useState(
+    "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&h=150&fit=crop&crop=face",
+  )
 
   // 发送新消息
   const simulateReply = (contactId: string, userMessage: string) => {
@@ -280,7 +283,8 @@ export default function ChatApp() {
         contact={activeContact}
         messages={messages[activeContact.id] || []}
         onSendMessage={sendMessage}
-        isTyping={isTyping} // 添加这一行
+        isTyping={isTyping}
+        userAvatar={userAvatar}
       />
     </div>
   )
